@@ -34,7 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()//
                 .antMatchers("/users/login").permitAll()//
                 .antMatchers("/users/register").permitAll()//
-                .antMatchers("/posts/search").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
@@ -43,9 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Apply JWT
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
-
-        // Optional, if you want to test the API from a browser
-        // http.httpBasic();
     }
 
     @Override
@@ -56,7 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html")//
                 .antMatchers("/configuration/**")//
                 .antMatchers("/webjars/**")//
-                .antMatchers("/public");
+                .antMatchers("/public")
+                .antMatchers("/built/bundle.js")
+                .antMatchers("/main.css")
+                .antMatchers("/");
     }
 
     @Bean
