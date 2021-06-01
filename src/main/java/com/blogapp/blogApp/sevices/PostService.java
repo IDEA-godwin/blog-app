@@ -26,17 +26,23 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final TagRepository tagRepository;
+    private final CategoryRepository categoryRepo;
+    private final PostRepository postRepository;
 
-    @Autowired
-    TagRepository tagRepository;
+    public PostService(UserRepository userRepository, TagRepository tagRepository,
+                       CategoryRepository categoryRepo, PostRepository postRepository) {
+        this.userRepository = userRepository;
+        this.tagRepository = tagRepository;
+        this.categoryRepo = categoryRepo;
+        this.postRepository = postRepository;
+    }
 
-    @Autowired
-    CategoryRepository categoryRepo;
-
-    @Autowired
-    PostRepository postRepository;
+    public ResponseEntity getAllPost() {
+        List<Post> posts = postRepository.findAll();
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
 
     public ResponseEntity addNewPost(HttpServletRequest req, PostRequestDTO post) {
         List<String> tags = post.getTags();
@@ -53,7 +59,7 @@ public class PostService {
         return new ResponseEntity<>(postRepository.save(newPost), HttpStatus.OK);
     }
 
-    public ResponseEntity getAllPost(HttpServletRequest req) {
+    public ResponseEntity getAllUserPost(HttpServletRequest req) {
         if(!isUserActive(req))
             return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
         User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
@@ -62,7 +68,7 @@ public class PostService {
         return new ResponseEntity<>(postsList, HttpStatus.OK);
     }
 
-    public ResponseEntity getSinglePost(HttpServletRequest req, Long id) {
+    public ResponseEntity getSingleUserPost(HttpServletRequest req, Long id) {
         if(!isUserActive(req))
             return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
         User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
@@ -89,7 +95,7 @@ public class PostService {
         return new ResponseEntity<>(postRepository.save(updatePost), HttpStatus.OK);
     }
 
-    public ResponseEntity deleteSinglePost(HttpServletRequest req, Long id) {
+    public ResponseEntity deleteSingleUserPost(HttpServletRequest req, Long id) {
         if(!isUserActive(req))
             return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
         User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
@@ -97,7 +103,7 @@ public class PostService {
         return new ResponseEntity("Post Deleted at id: " + id, HttpStatus.OK);
     }
 
-    public ResponseEntity deleteAllPost(HttpServletRequest req) {
+    public ResponseEntity deleteAllUserPost(HttpServletRequest req) {
         if(!isUserActive(req))
             return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
         User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());

@@ -18,35 +18,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // Disable CSRF (cross site request forgery)
         http.csrf().disable();
-
-        // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // Entry points
-        http.authorizeRequests()//
-                .antMatchers("/users/login").permitAll()//
-                .antMatchers("/users/register").permitAll()//
-                // Disallow everything else..
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/posts").permitAll()
                 .anyRequest().authenticated();
 
-        // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login");
 
-        // Apply JWT
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        // Allow swagger to be accessed without authentication
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs")//
                 .antMatchers("/swagger-resources/**")//
                 .antMatchers("/swagger-ui.html")//

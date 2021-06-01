@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/users")
 @Api(tags = "users")
 public class UserResource {
 
@@ -42,13 +41,6 @@ public class UserResource {
         return userService.loginUser(user.getEmail(), user.getPassword());
     }
 
-    @PutMapping("/{userEmail}")
-    @PreAuthorize("hasAuthority('ROLES_ADMIN')")
-    public ResponseEntity updateUserDetails(@PathVariable String userEmail, @RequestParam String role,
-                                            @RequestBody User user) {
-        return userService.updateUserDetails(userEmail, user, role);
-    }
-
     @ApiOperation(value = "Log out user", authorizations = {@Authorization(value = "apiKey")})
     @ApiResponses(value = {
             @ApiResponse(code = 422, message = "User not logged in")})
@@ -63,8 +55,15 @@ public class UserResource {
             @ApiResponse(code = 400, message = "something went wrong"),
             @ApiResponse(code = 403, message = "access denied; check token"),
             @ApiResponse(code = 500, message = "Expired or invalid token")})
-    @GetMapping("/me")
+    @GetMapping("users/me")
     public ResponseEntity viewLoggedInUser(HttpServletRequest req) {
         return userService.viewLoggedInUser(req);
+    }
+
+    @PutMapping("users/{userEmail}")
+    @PreAuthorize("hasAuthority('ROLES_ADMIN')")
+    public ResponseEntity updateUserDetails(@PathVariable String userEmail, @RequestParam String role,
+                                            @RequestBody User user) {
+        return userService.updateUserDetails(userEmail, user, role);
     }
 }

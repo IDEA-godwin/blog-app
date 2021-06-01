@@ -1,13 +1,47 @@
 
 import React from 'react'
+import { connect } from "react-redux"
+import { Switch, Route } from "react-router-dom"
 
-export class App extends React.Component {
+import Header from "./components/Header"
+import Home from "./components/Home"
+import Login from "./components/Login"
+import Register from "./components/Register"
+
+
+class App extends React.Component {
+
     render() {
+        let state = this.state
         return (
-            <div>the true web</div>
+            <React.Fragment>
+                <div id="app-header">
+                    <Header isLoggedIn={state.isLoggedIn} />
+                </div>
+                <div id="app-body">
+                    <Switch>
+                        <Route
+                            exact path="/"
+                            render={() => <Home {...this.props} /> } />
+                        <Route
+                            path="/login"
+                            render={() => <Login {...this.props} /> } />
+                        <Route
+                            path="/register"
+                            render={() => <Register {...this.props} /> } />
+                    </Switch>
+                </div>
+            </React.Fragment>
         )
     }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        isUserLoggedIn: state.appState.isUserLoggedIn,
+        loggedInUser: state.appState.user,
+    }
+}
+
+export default connect(mapStateToProps)(App);
 

@@ -12,4 +12,14 @@ public class HomeResource {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "index";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "index";
+    }
 }

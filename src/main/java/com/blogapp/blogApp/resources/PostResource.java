@@ -12,15 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/posts")
 @Api(tags = "posts")
 public class PostResource {
 
-    @Autowired
-    PostService postService;
+    private final PostService postService;
 
+    public PostResource(PostService postService) {
+        this.postService = postService;
+    }
 
-    @PostMapping
+    @PostMapping("/posts")
     @ApiOperation(value = "Create Post", authorizations = {@Authorization(value = "apiKey")})
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "something went wrong"),
@@ -30,29 +31,34 @@ public class PostResource {
         return postService.addNewPost(req, post);
     }
 
-    @GetMapping
+    @GetMapping("/posts")
+    public ResponseEntity getAllPost() {
+        return postService.getAllPost();
+    }
+
+    @GetMapping("/me/posts")
     @ApiOperation(value = "view all Post", response = PostsListResponseDTO.class,
                     authorizations = @Authorization(value = "apiKey"))
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "something went wrong"),
             @ApiResponse(code = 403, message = "Access denied confirm token"),
             @ApiResponse(code = 500, message = "Expired or invalid token")})
-    public ResponseEntity getAllPost(HttpServletRequest req) {
-        return postService.getAllPost(req);
+    public ResponseEntity getAlUserPost(HttpServletRequest req) {
+        return postService.getAllUserPost(req);
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/me/posts/{postId}")
     @ApiOperation(value = "view Post", response = Post.class,
             authorizations = @Authorization(value = "apiKey"))
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "something went wrong"),
             @ApiResponse(code = 403, message = "Access denied confirm token"),
             @ApiResponse(code = 500, message = "Expired or invalid token")})
-    public ResponseEntity getSinglePost(HttpServletRequest req, @PathVariable Long postId) {
-        return postService.getSinglePost(req, postId);
+    public ResponseEntity getSingleUserPost(HttpServletRequest req, @PathVariable Long postId) {
+        return postService.getSingleUserPost(req, postId);
     }
 
-    @PutMapping("/{postId}")
+    @PutMapping("/me/posts/{postId}")
     @ApiOperation(value = "Update Post", response = Post.class,
             authorizations = @Authorization(value = "apiKey"))
     @ApiResponses(value = {
@@ -66,15 +72,15 @@ public class PostResource {
         return postService.updatePost(req, postId, post);
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/me/posts/{postId}")
     @ApiOperation(value = "Delete Post", authorizations = @Authorization(value = "apiKey"))
-    public ResponseEntity deleteSinglePost(HttpServletRequest req, @ApiParam("Post id") @PathVariable Long postId) {
-        return postService.deleteSinglePost(req, postId);
+    public ResponseEntity deleteSingleUserPost(HttpServletRequest req, @ApiParam("Post id") @PathVariable Long postId) {
+        return postService.deleteSingleUserPost(req, postId);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/me/posts")
     @ApiOperation(value = "Delete All Post", authorizations = @Authorization(value = "apiKey"))
-    public ResponseEntity deleteAllPost(HttpServletRequest req) {
-        return postService.deleteAllPost(req);
+    public ResponseEntity deleteAllUserPost(HttpServletRequest req) {
+        return postService.deleteAllUserPost(req);
     }
 }
