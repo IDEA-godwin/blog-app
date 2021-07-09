@@ -1,40 +1,41 @@
 
 import React from "react"
 
-import Post from "./Post";
-import {getAllPost} from "../middleware";
-
+import Header from "./Header"
+import Posts from "./Posts";
+import {getAllPost} from "../requestActions";
 
 class Home extends React.Component {
+
     state = {
-        posts: [
-            // {
-            //     title: "the static post",
-            //     postBody: "it is just weird sometimes i just dont get it"
-            // }
-        ]
+        loading: true,
+        posts: null
     }
 
     componentDidMount() {
-        let getPosts = getAllPost()
-        setTimeout(() => {
+        getAllPost().then(({status, data}) => {
             this.setState({
-                posts: getPosts.then(res => res.data)
+                loading: false,
+                posts: status === 200 ? data.body : null
             })
-        }, 5000)
-    }
-
-    getAllPost(posts) {
-        return posts.length === 0 ? "there is no post to show"
-            : console.log(posts)
+        })
     }
 
     render() {
-        let { posts } = this.state
+        let { loading, posts } = this.state
+
+        if(loading){
+            return (<span>Loading...</span>)
+        }
         return (
-            <div className="home-container">
-                { this.getAllPost(posts) }
-            </div>
+            <>
+                <Header />
+                <article className="container">
+                    <div className="content">
+                        <Posts posts={posts} />
+                    </div>
+                </article>
+            </>
         );
     }
 }

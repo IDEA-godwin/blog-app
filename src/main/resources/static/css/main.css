@@ -1,0 +1,285 @@
+
+body {
+    background-color: white;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    padding: 20px 12%; margin: 0;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    background-color: #151414;
+    color: #c6c6c6;
+}
+
+.header-top {
+    display: inherit;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-middle {
+    padding: 15% 10% 15% 10%;
+    text-align: center;
+    font-family: "Ink Free", sans-serif;
+    font-size: 2rem;
+}
+
+.header-middle h1 {
+    color: #fffefe;
+    font-family: "Segoe UI", serif;
+    font-weight: bolder;
+    font-size: 3.3rem;
+    line-height: 0;
+}
+
+.list {
+    text-align: right;
+    margin: 0; padding: 0;
+    display: inline-block;
+}
+
+.list li {
+    display: inline-block;
+    padding: 7px 10px;
+}
+
+.list li:first-child {
+    padding-left: 0;
+}
+
+.button {
+    text-decoration: none;
+    background-color: #151414;
+    cursor: pointer;
+    color: #c6c6c6;
+}
+
+.button:hover {
+    color: white;
+}
+
+.form {
+    width: 40%;
+    text-align: center;
+    padding: 10px; margin: 10% auto;
+    border: 1px black solid;
+}
+
+.input {
+    width: 90%;
+    padding: 7px;
+    margin-bottom: 8px;
+    font-weight: bolder;
+}
+
+.submit-button {
+    width: 90px;
+    display: block;
+    justify-self: center;
+    margin: 10px auto;
+}
+
+::placeholder {
+    color: green;
+    font-weight: 100;
+}
+
+.menu-button {
+    padding: 13px;
+    margin: 5px 15px;
+}
+
+.post-container {
+    padding-top: 20px;
+}
+.create-button {
+    margin: 5px;
+    padding: 5px;
+}
+
+.modal {
+    position: fixed;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    width: 500px;
+    background-color: #fff;
+    text-align: left;
+}
+
+.modal-header, .modal-footer {
+    padding: 0 10px;
+
+}
+
+.modal-footer > input {
+    margin: 10px
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.modal-body {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.post-form-body {
+    padding: 20px;
+    text-align: center;
+    overflow: paged-x;
+}
+
+.post-form-body div {
+    text-align: left;
+}
+
+.post-form-body  label{
+    display: block;
+}
+
+.post-form-input {
+    margin: 10px;
+    width: 90%;
+}
+
+.post-form-body input,
+.post-form-body select {
+    padding: 7px;
+}
+
+.post-form-footer {
+    text-align: center;
+}
+
+.post-form-footer input {
+    width: 30%;
+    margin: 20px
+}
+
+.tag-box {
+    width: 80%;
+    border: 1px solid black;
+    padding: 5px; margin: 5px 10px;
+    cursor: default
+}
+
+.tag-box-items {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0; margin: 0;
+    cursor: inherit;
+}
+
+.tag-box-items .tag {
+    display: inline-block;
+    border: 1px solid black;
+    padding: 4px;
+    cursor: inherit;
+}
+
+.tag {
+    margin: 0px 8px;
+}
+
+.add-tag {
+    border: 1px solid black;
+    width: 150px;
+    display: flex;
+}
+
+.add-tag > input {
+    outline: none;
+    border: none;
+    width: 70%;
+}
+
+.add-tag > button {
+    width: 30%;
+    outline: none;
+    border: none;
+    text-align: center;
+}
+
+.add-tag > button > img {
+    width: 30px;
+}
+
+.content {
+    display: inherit;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.preview-box {
+    width: 33.3%;
+    margin: 0 8px 10px;
+    border: 1px solid black;
+}
+
+.preview-box:hover {
+    box-shadow: 5px 5px 3px;
+}
+
+.post-img {
+    width: 100%;
+    height: 150px;
+}
+
+.post-content {
+    padding: 7px
+}
+
+.post-content-top h2 {
+    padding: 0; margin: 0;
+    font-size: 1.6rem;
+}
+
+.post-content-top p {
+    margin-top: 0;
+}
+
+.admin-corner {
+    width: 100%;
+    text-align: right;
+    padding-top: 5px;
+}
+
+.admin-corner button {
+    width: 75px;
+    margin-left: 5px;
+    padding: 4px;
+    color: white;
+    outline: none;
+}
+
+.admin-corner button:hover {
+    color: black;
+    opacity: 0.6;
+}
+
+.edit-btn {
+    background-color: green;
+}
+
+.delete-btn {
+    background-color: red;
+}

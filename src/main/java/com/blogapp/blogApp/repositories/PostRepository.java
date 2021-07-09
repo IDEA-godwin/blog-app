@@ -1,6 +1,7 @@
 package com.blogapp.blogApp.repositories;
 
-import com.blogapp.blogApp.domains.Post;
+import com.blogapp.blogApp.entities.Admin;
+import com.blogapp.blogApp.entities.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,4 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findAllByUserUserId(Long userId);
-    Optional<Post> findByPostIdAndUserUserId(Long id, Long userId);
 }

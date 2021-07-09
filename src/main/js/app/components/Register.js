@@ -1,12 +1,12 @@
 
 import React from "react"
-import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom"
-import { registerUser } from "../middleware";
+import { registerUser } from "../requestActions";
 
 class Register extends React.Component {
 
     state = {
+        role: "User",
         fullName: "",
         email: "",
         password: "",
@@ -20,17 +20,23 @@ class Register extends React.Component {
     }
 
     onClick(event) {
-        let { history, error } = this.props
-        let { fullName, email, password,  } = this.state
-        this.props.dispatch(registerUser({ fullName, email, password }))
+        event.preventDefault()
+        let {fullName, email, password, role} = this.state
+        registerUser({fullName, email, password, role}).then(res => {
+            if(res.message === "success")
+                this.props.history.push("/login")
+        })
         this.setState({
             fullName: "",
             email: "",
-            password: ""
+            password: "",
+            role: "User",
+            error: "invalid credentials"
         })
-        setTimeout(() => {
-            if(error === null) history.push("/login")
-        }, 3000)
+    }
+
+    handleEvent(event) {
+        console.log(event.target.value)
     }
 
     render() {
@@ -53,9 +59,16 @@ class Register extends React.Component {
                     required={true}
                     type="password" name="password" className="input"
                     placeholder="Enter Password" value={state.password} />
+                <select
+                    onChange={event =>  this.onChange(event) }
+                    name={"role"} value={state.role}
+                >
+                    <option>Admin</option>
+                    <option>User</option>
+                </select>
                 <span style={{display: "block"}}>{ state.error }</span>
                 <input
-                    onClick={event => this.onClick(event)} type="button"
+                    onClick={event => this.onClick(event)} type="submit"
                     className="submit-button button" value="Submit" />
                 <span style={{display: "block"}}>
                     have an Account? <Link to="/login">Login</Link>
@@ -65,12 +78,4 @@ class Register extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        loading: state.register.loading,
-        user: state.register.user,
-        error: state.register.error
-    }
-}
-
-export default withRouter(connect(mapStateToProps)(Register))
+export default withRouter(Register)

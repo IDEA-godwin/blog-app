@@ -1,24 +1,20 @@
 package com.blogapp.blogApp.sevices;
 
-import com.blogapp.blogApp.Functions;
-import com.blogapp.blogApp.domains.Post;
-import com.blogapp.blogApp.domains.Tag;
-import com.blogapp.blogApp.domains.User;
-import com.blogapp.blogApp.dto.PostRequestDTO;
-import com.blogapp.blogApp.dto.PostResponseDTO;
-import com.blogapp.blogApp.dto.PostsListResponseDTO;
-import com.blogapp.blogApp.exception.CustomException;
+import com.blogapp.blogApp.DTO.ResponseDTO;
+import com.blogapp.blogApp.DTO.requests.PostRequestDTO;
+import com.blogapp.blogApp.configs.Functions;
+import com.blogapp.blogApp.entities.Category;
+import com.blogapp.blogApp.entities.Post;
+import com.blogapp.blogApp.entities.Tag;
 import com.blogapp.blogApp.repositories.CategoryRepository;
 import com.blogapp.blogApp.repositories.PostRepository;
 import com.blogapp.blogApp.repositories.TagRepository;
 import com.blogapp.blogApp.repositories.UserRepository;
-import com.blogapp.blogApp.securities.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,9 +23,9 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final CategoryRepository categoryRepo;
-    private final PostRepository postRepository;
 
     public PostService(UserRepository userRepository, TagRepository tagRepository,
                        CategoryRepository categoryRepo, PostRepository postRepository) {
@@ -39,98 +35,68 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public ResponseEntity getAllPost() {
-        List<Post> posts = postRepository.findAll();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    public ResponseEntity<ResponseDTO> getAllPost() {
+        return new ResponseEntity<>(new ResponseDTO("success", postRepository.findAll()), HttpStatus.OK);
     }
 
-    public ResponseEntity addNewPost(HttpServletRequest req, PostRequestDTO post) {
-        List<String> tags = post.getTags();
-        if(!isUserActive(req))
-            return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
-        if(!isValidCategory(post.getCategory()))
-            return new ResponseEntity("Not a valid category", HttpStatus.BAD_REQUEST);
-        Post newPost = new Post(post.getTitle(), post.getPostBody());
-        newPost.setUser(userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName()));
-        newPost.setCategory(categoryRepo.findByCategoryNameIgnoreCase(post.getCategory()).get());
-        newPost.setPostTags(addTags(newPost, post.getTags()));
-        newPost.setCreatedDate(new Functions().dateFormat(Date.from(Instant.now())));
-        newPost.setUpdatedDate(new Functions().dateFormat(Date.from(Instant.now())));
-        return new ResponseEntity<>(postRepository.save(newPost), HttpStatus.OK);
+    public ResponseEntity<ResponseDTO> addNewPost(PostRequestDTO postReq) {
+        try{
+            Post post = new Post(postReq.getTitle(), postReq.getPostBody());
+            post.setCategory(validCategory(postReq.getCategory()));
+            post.setPostTags(addTags(postReq.getTags()));
+            post.setCreatedDate(new Functions().dateFormat(Instant.now()));
+            return new ResponseEntity<>(
+                    new ResponseDTO("success", postRepository.save(post)), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-
-    public ResponseEntity getAllUserPost(HttpServletRequest req) {
-        if(!isUserActive(req))
-            return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
-        User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
-        List<Post> posts = postRepository.findAllByUserUserId(user.getUserId());
-        PostsListResponseDTO postsList = new PostsListResponseDTO(user.getFullName(), posts, posts.size());
-        return new ResponseEntity<>(postsList, HttpStatus.OK);
+//
+//    public ResponseEntity<ResponseDTO> getSinglePost(HttpServletRequest req, Long id) {
+//        Admin author = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
+//        Post post = postRepository.findByPostIdAndAuthor(id, author)
+//                .orElseThrow(() -> new ErrorStatusResponse("No Such Post", HttpStatus.NOT_FOUND));
+//        return new ResponseEntity<>(new ResponseDTO("Success", post), HttpStatus.OK);
+//    }
+//
+    public ResponseEntity<ResponseDTO> updatePost(Long id, PostRequestDTO postReq) {
+        if(postRepository.findById(id).isPresent()) {
+            Post post = postRepository.findById(id).get();
+            post.setTitle(postReq.getTitle());
+            post.setPostBody(postReq.getPostBody());
+            post.setCategory(validCategory(postReq.getCategory()));
+            post.setPostTags(addTags(postReq.getTags()));
+            post.setCreatedDate(new Functions().dateFormat(Instant.now()));
+            return new ResponseEntity<>(
+                    new ResponseDTO("post updated", postRepository.save(post)), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponseDTO("post not found"), HttpStatus.NOT_FOUND);
     }
+//
+//    public ResponseEntity<ResponseDTO> deleteSinglePost(HttpServletRequest req, Long id) {
+//        Admin admin = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
+//        postRepository.delete(postRepository.findByPostIdAndAuthor(id, admin).get());
+//        return new ResponseEntity<>(new ResponseDTO("Post Deleted at id: " + id), HttpStatus.OK);
+//    }
+//
+//    public ResponseEntity<ResponseDTO> deleteAllPost(HttpServletRequest req) {
+//        Admin admin = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
+//        postRepository.deleteInBatch(postRepository.findAllByAuthor(admin));
+//        return new ResponseEntity<>(new ResponseDTO("All Post Deleted"), HttpStatus.OK);
+//    }
 
-    public ResponseEntity getSingleUserPost(HttpServletRequest req, Long id) {
-        if(!isUserActive(req))
-            return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
-        User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
-        Post getPost = postRepository.findByPostIdAndUserUserId(id, user.getUserId())
-                .orElseThrow(() -> new CustomException("No Such Post", HttpStatus.NOT_FOUND));
-        PostResponseDTO postResponse = new PostResponseDTO(user.getFullName(),getPost.getTitle(), getPost.getPostBody(),
-                                        getPost.getCategory(), getPost.getPostTags());
-        return new ResponseEntity<>(postResponse, HttpStatus.OK);
-    }
-
-    public ResponseEntity updatePost(HttpServletRequest req, Long id, PostRequestDTO post) {
-        if(!isUserActive(req))
-            return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
-        if(!isValidCategory(post.getCategory()))
-            return new ResponseEntity("Not a valid category", HttpStatus.BAD_REQUEST);
-        User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
-        Post updatePost = postRepository.findByPostIdAndUserUserId(id, user.getUserId())
-                .orElseThrow(() -> new CustomException("No Such Post", HttpStatus.UNPROCESSABLE_ENTITY));
-        updatePost.setTitle(new Functions().update(updatePost.getTitle(), post.getTitle()));
-        updatePost.setPostBody(new Functions().update(updatePost.getPostBody(), post.getPostBody()));
-        updatePost.setCategory(categoryRepo.findByCategoryNameIgnoreCase(post.getCategory()).get());
-        updatePost.setPostTags(addTags(updatePost, post.getTags()));
-        updatePost.setUpdatedDate(new Functions().dateFormat(Date.from(Instant.now())));
-        return new ResponseEntity<>(postRepository.save(updatePost), HttpStatus.OK);
-    }
-
-    public ResponseEntity deleteSingleUserPost(HttpServletRequest req, Long id) {
-        if(!isUserActive(req))
-            return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
-        User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
-        postRepository.delete(postRepository.findByPostIdAndUserUserId(id, user.getUserId()).get());
-        return new ResponseEntity("Post Deleted at id: " + id, HttpStatus.OK);
-    }
-
-    public ResponseEntity deleteAllUserPost(HttpServletRequest req) {
-        if(!isUserActive(req))
-            return new ResponseEntity<>("Try logging in or Expired Token", HttpStatus.UNPROCESSABLE_ENTITY);
-        User user = userRepository.findByEmailIgnoreCase(req.getUserPrincipal().getName());
-        postRepository.deleteInBatch(postRepository.findAllByUserUserId(user.getUserId()));
-        return new ResponseEntity("All Post Deleted", HttpStatus.OK);
-    }
-
-    boolean isUserActive(HttpServletRequest req) {
-        String email = req.getUserPrincipal().getName();
-        User user = userRepository.findByEmailIgnoreCase(email);
-        return user.getToken() != null && user.getToken().equals(new JwtTokenProvider().resolveToken(req));
-    }
-
-    //checks category validity
-    boolean isValidCategory(String category) {
-        return categoryRepo.findByCategoryNameIgnoreCase(category).isPresent();
+    //return category if valid else throw category invalid
+    Category validCategory(String category) {
+        if(categoryRepo.findByNameIgnoreCase(category).isPresent())
+            return categoryRepo.findByNameIgnoreCase(category).get();
+        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "category invalid");
     }
 
     //returns set of tags from list of string for post
-    Set<Tag> addTags(Post post, List<String> tags) {
+    Set<Tag> addTags(Set<String> tags) {
         if(tags.isEmpty())
             return new HashSet<>();
-        return tags.stream().map( s -> {
-            Tag tag = getTag(s);
-            tag.setPosts(new HashSet<>(Collections.singletonList(post)));
-            return tagRepository.save(tag);
-        }).collect(Collectors.toSet());
+        return tags.stream().map(this::getTag).collect(Collectors.toSet());
     }
 
     //check if tag exist returning saved tag if tag does not exist

@@ -1,47 +1,47 @@
 
-import React from 'react'
-import { connect } from "react-redux"
-import { Switch, Route } from "react-router-dom"
+import React, {useState, useEffect} from "react"
+import { Switch, Route, Redirect, withRouter } from "react-router-dom"
 
-import Header from "./components/Header"
 import Home from "./components/Home"
+import About from "./components/About"
+import Admin from "./Admin"
+import PostForm from "./components/postForm/PostForm"
 import Login from "./components/Login"
-import Register from "./components/Register"
+
+import { Error } from "./components/Error"
+import { getAllPost } from "./requestActions";
 
 
-class App extends React.Component {
+export class App extends React.Component {
 
     render() {
-        let state = this.state
-        return (
-            <React.Fragment>
-                <div id="app-header">
-                    <Header isLoggedIn={state.isLoggedIn} />
-                </div>
-                <div id="app-body">
-                    <Switch>
-                        <Route
-                            exact path="/"
-                            render={() => <Home {...this.props} /> } />
-                        <Route
-                            path="/login"
-                            render={() => <Login {...this.props} /> } />
-                        <Route
-                            path="/register"
-                            render={() => <Register {...this.props} /> } />
-                    </Switch>
-                </div>
-            </React.Fragment>
+        return(
+            <>
+                <Switch>
+                    <Route
+                        path = "/" exact
+                        render = {() => <Home /> } />
+                    <Route
+                        path = "/About" exact
+                        render = {() => <About /> } />
+                    <Route
+                        path = "/admin" exact
+                        render = {() => <Admin /> } />
+                    <Route
+                        path = "/create-post" exact
+                        render={() => <PostForm {...this.props} />} />
+                    <Route
+                        path = "/login" exact
+                        render = {() => <Login /> } />
+
+                    <Redirect from = "/*" to = "/error" />
+                    <Route
+                        path = "/error"
+                        render = {() => <Error /> } />
+                </Switch>
+            </>
         )
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        isUserLoggedIn: state.appState.isUserLoggedIn,
-        loggedInUser: state.appState.user,
-    }
-}
-
-export default connect(mapStateToProps)(App);
-
+export default withRouter(App)

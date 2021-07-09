@@ -29,8 +29,8 @@ public class GlobalExceptionHandlerController {
         };
     }
 
-    @ExceptionHandler(CustomException.class)
-    public void handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
+    @ExceptionHandler(ErrorStatusResponse.class)
+    public void handleCustomException(HttpServletResponse res, ErrorStatusResponse ex) throws IOException {
         res.sendError(ex.getHttpStatus().value(), ex.getMessage());
     }
 

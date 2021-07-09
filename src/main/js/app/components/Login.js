@@ -1,20 +1,16 @@
 
 import React from "react"
-import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom";
 
-import { loginUser } from "../middleware";
+import { loginUser } from "../requestActions";
 
 
 
 export class Login extends React.Component {
     state = {
-        email: !this.props.isUserRegistered ? "" : this.props.registeredUser.body.email,
-        password: ""
-    }
-
-    componentDidMount() {
-        console.log(this.props)
+        email: "",
+        password: "",
+        error: ""
     }
 
     onChange(event) {
@@ -25,13 +21,17 @@ export class Login extends React.Component {
 
     onClick(event) {
         let { email, password } = this.state
-        this.props.dispatch(loginUser({email, password}))
-        setTimeout(() => {
-            console.log(this.props.appUser)
-        }, 1000)
-        this.setState({
-            email: "",
-            password: ""
+        loginUser({email, password}).then(({ status, data, err }) => {
+            if(status === 200){
+                localStorage.setItem("token", data.body.token)
+                this.props.history.push("/admin")
+            } else {
+                this.setState({
+                    email: "",
+                    password: "",
+                    error: "email or password incorrect"
+                })
+            }
         })
     }
 
@@ -51,6 +51,9 @@ export class Login extends React.Component {
                 <input
                     onClick={event => this.onClick(event)} type="button"
                     className="submit-button button" value="Submit" />
+                <span style={{display: "block", color: "red"}}>
+                    { state.error}
+                </span>
                 <span style={{display: "block"}}>
                     No Account? <Link to="/register">Register</Link>
                 </span>
@@ -59,12 +62,4 @@ export class Login extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        isUserRegistered: state.register.isUserRegistered,
-        registeredUser: state.register.user,
-        appUser: state.appState.user
-    }
-}
-
-export default withRouter(connect(mapStateToProps)(Login));
+export default withRouter(Login);
