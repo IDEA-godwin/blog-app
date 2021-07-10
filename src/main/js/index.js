@@ -3,7 +3,7 @@ import React from "react";
 import ReactDom from "react-dom";
 import {BrowserRouter as Router} from "react-router-dom";
 
-import App from "./app-v1/App";
+import App from "./app/App";
 
 ReactDom.render(
     <Router>
