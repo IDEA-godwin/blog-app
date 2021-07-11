@@ -6,7 +6,6 @@ import { registerUser } from "../requestActions";
 class Register extends React.Component {
 
     state = {
-        role: "User",
         fullName: "",
         email: "",
         password: "",
@@ -21,8 +20,8 @@ class Register extends React.Component {
 
     onClick(event) {
         event.preventDefault()
-        let {fullName, email, password, role} = this.state
-        registerUser({fullName, email, password, role}).then(res => {
+        let {fullName, email, password} = this.state
+        registerUser({fullName, email, password}).then(res => {
             if(res.message === "success")
                 this.props.history.push("/login")
         })
@@ -30,13 +29,8 @@ class Register extends React.Component {
             fullName: "",
             email: "",
             password: "",
-            role: "User",
             error: "invalid credentials"
         })
-    }
-
-    handleEvent(event) {
-        console.log(event.target.value)
     }
 
     render() {
@@ -59,13 +53,6 @@ class Register extends React.Component {
                     required={true}
                     type="password" name="password" className="input"
                     placeholder="Enter Password" value={state.password} />
-                <select
-                    onChange={event =>  this.onChange(event) }
-                    name={"role"} value={state.role}
-                >
-                    <option>Admin</option>
-                    <option>User</option>
-                </select>
                 <span style={{display: "block"}}>{ state.error }</span>
                 <input
                     onClick={event => this.onClick(event)} type="submit"

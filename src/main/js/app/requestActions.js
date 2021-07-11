@@ -5,7 +5,7 @@ const baseUrl = "http://localhost:8080/api"
 
 export const registerUser = payload => {
     return axios.post(
-        baseUrl + `/register?role=${payload.role}`,
+        baseUrl + `/register`,
         {
             fullName: payload.fullName,
             email: payload.email,

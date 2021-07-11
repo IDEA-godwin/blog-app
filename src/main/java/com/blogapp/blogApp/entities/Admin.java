@@ -42,7 +42,4 @@ public class Admin implements Serializable {
         this.password = password;
     }
 
-    public boolean isUserActive(HttpServletRequest req) {
-        return this.token != null;
-    }
 }

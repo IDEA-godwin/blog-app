@@ -9,7 +9,7 @@ import PostForm from "./components/postForm/PostForm"
 import Login from "./components/Login"
 
 import { Error } from "./components/Error"
-import { getAllPost } from "./requestActions";
+import Register from "./components/Register";
 
 
 export class App extends React.Component {
@@ -30,6 +30,9 @@ export class App extends React.Component {
                     <Route
                         path = "/create-post" exact
                         render={() => <PostForm {...this.props} />} />
+                    <Route
+                        path="/register"
+                        render={() => <Register /> } />
                     <Route
                         path = "/login" exact
                         render = {() => <Login /> } />
