@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**")
                 .antMatchers("/admin/posts")
                 .antMatchers("/admin")
+                .antMatchers("/register")
                 .antMatchers("/login")
                 .antMatchers("/posts-list")
                 .antMatchers("/create-post")

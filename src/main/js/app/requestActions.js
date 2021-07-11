@@ -1,4 +1,7 @@
 
+// const config = {
+//     baseUrl: process.env.SERVER_API_URL
+// }
 import axios from "axios"
 
 const baseUrl = "http://localhost:8080/api"
@@ -66,6 +69,7 @@ export const createPost = payload => {
 }
 
 export const getAllPost = () => {
+    console.log(baseUrl)
     return axios.get(baseUrl + "/posts")
         .then(res => {
             return {
