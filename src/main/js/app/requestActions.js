@@ -69,7 +69,7 @@ export const createPost = payload => {
 }
 
 export const getAllPost = () => {
-    console.log(baseUrl)
+    console.log(process.env)
     return axios.get(baseUrl + "/posts")
         .then(res => {
             return {
