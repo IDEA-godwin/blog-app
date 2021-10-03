@@ -1,16 +1,11 @@
 package com.blogapp.blogApp.controllers.Rest;
 
 import com.blogapp.blogApp.DTO.ResponseDTO;
-import com.blogapp.blogApp.entities.Post;
 import com.blogapp.blogApp.DTO.requests.PostRequestDTO;
-import com.blogapp.blogApp.DTO.requests.PostsListResponseDTO;
 import com.blogapp.blogApp.sevices.PostService;
-import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api")
@@ -24,7 +19,7 @@ public class PostResource {
 
     @GetMapping("/posts")
     public ResponseEntity<ResponseDTO> getAllPost() {
-        return postService.getAllPost();
+        return new ResponseEntity<>(new ResponseDTO("success", postService.getAllPost()), HttpStatus.OK);
     }
 
     @PostMapping("/posts")

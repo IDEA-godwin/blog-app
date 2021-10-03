@@ -1,16 +1,47 @@
 
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <title>Blog-App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="css/main.css" rel="stylesheet" type="text/css" media="all" />
-</head>
-<body>
-<div id="app"></div>
-<script src="built/bundle.js"></script>
-</body>
+    <head>
+        <title>Blog-App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="https://kit.fontawesome.com/ae8f08ae49.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet" type="text/css" media="all" />
+    </head>
+    <body>
+        <header>
+            <div class="header-top">
+                <a href="index.html"><img class="logo" src="images/logo.png" alt="logo"></a>
+                <ul class="social-icon-list">
+                    <li class="button">
+                        <i class="fab fa-facebook-square"></i>
+                    </li>
+                    <li class="button">
+                        <i class="fab fa-twitter-square"></i>
+                    </li>
+                    <li class="button">
+                        <i class="fab fa-linkedin"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="header-middle">
+                <h1>The Green Developer's Blog</h1>
+                <h3>...<span style="color: green">Roses</span> are Green</h3>
+            </div>
+            <div class="header-bottom">
+                <span><a href="#" class="about button">The Green Developer</a></span>
+            </div>
+        </header>
+        <section>
+            <article class="posts-container" th:if="${posts.isEmpty()}">
+                No Posts
+            </article>
+            <article class="posts-container" th:unless="${posts.isEmpty()}" th:each="post : ${posts}">
+                List of posts
+            </article>
+        </section>
+    </body>
 </html>
 
     	

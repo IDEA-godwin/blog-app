@@ -35,8 +35,8 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public ResponseEntity<ResponseDTO> getAllPost() {
-        return new ResponseEntity<>(new ResponseDTO("success", postRepository.findAll()), HttpStatus.OK);
+    public List<Post> getAllPost() {
+        return postRepository.findAll();
     }
 
     public ResponseEntity<ResponseDTO> addNewPost(PostRequestDTO postReq) {

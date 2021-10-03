@@ -1,51 +1,28 @@
 package com.blogapp.blogApp.controllers.template;
 
+import com.blogapp.blogApp.entities.Post;
+import com.blogapp.blogApp.repositories.PostRepository;
+import com.blogapp.blogApp.sevices.PostService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class TemplateResource {
 
-//    @GetMapping("/**")
-//    public String template() {
-//        return "index";
-//    }
+    private final PostService postService;
+
+    public TemplateResource(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping()
-    public String index() {
+    public String index(Model model) {
+        List<Post> posts = postService.getAllPost();
+        model.addAttribute("posts", posts);
         return "index";
     }
 
-    @GetMapping("/posts-list")
-    public String posts() {
-        return "index";
-    }
-
-    @GetMapping("/About")
-    public String about() { return "index"; }
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "index";
-    }
-
-    @GetMapping("/create-post")
-    public String createPost() {
-        return "index";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "index";
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "index";
-    }
-
-    @GetMapping("/error")
-    public String error() {
-        return "index";
-    }
 }
