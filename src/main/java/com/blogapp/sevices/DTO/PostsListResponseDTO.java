@@ -1,4 +1,4 @@
-package com.blogapp.blogApp.sevices.DTO.requests;
+package com.blogapp.blogApp.sevices.DTO;
 
 import com.blogapp.blogApp.entities.Post;
 //import io.swagger.annotations.ApiModelProperty;

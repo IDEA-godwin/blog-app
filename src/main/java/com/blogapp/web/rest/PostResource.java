@@ -1,7 +1,7 @@
-package com.blogapp.blogApp.controllers.rest;
+package com.blogapp.blogApp.web.rest;
 
-import com.blogapp.blogApp.DTO.ResponseDTO;
-import com.blogapp.blogApp.DTO.requests.PostRequestDTO;
+import com.blogapp.blogApp.sevices.DTO.ResponseDTO;
+import com.blogapp.blogApp.sevices.DTO.PostDTO;
 import com.blogapp.blogApp.sevices.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class PostResource {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<ResponseDTO> addNewPost(@RequestBody PostRequestDTO post) {
+    public ResponseEntity<ResponseDTO> addNewPost(@RequestBody PostDTO post) {
         return postService.addNewPost(post);
     }
 //

@@ -1,4 +1,4 @@
-package com.blogapp.blogApp.DTO;
+package com.blogapp.blogApp.sevices.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

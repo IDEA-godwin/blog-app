@@ -1,11 +1,11 @@
-package com.blogapp.blogApp.sevices.DTO.requests;
+package com.blogapp.blogApp.sevices.DTO;
 
 import lombok.Data;
 
 import java.util.Set;
 
 @Data
-public class PostRequestDTO {
+public class PostDTO {
 
     private String title;
     private String postBody;
