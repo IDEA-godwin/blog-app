@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <title>Blog-App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://kit.fontawesome.com/ae8f08ae49.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet" type="text/css" media="all" />
+  </head>
+  <body>
+    <header>
+      <div class="header-top">
+        <a href="/"><img class="logo" src="images/logo.png" alt="logo"></a>
+        <ul class="social-icon-list">
+          <li class="button">
+            <i class="fab fa-facebook-square"></i>
+          </li>
+          <li class="button">
+            <i class="fab fa-twitter-square"></i>
+          </li>
+          <li class="button">
+            <i class="fab fa-linkedin"></i>
+          </li>
+        </ul>
+      </div>
+      <div class="header-bottom">
+        <span><a href="#" class="about button">The Green Developer</a></span>
+      </div>
+    </header>
+    <article>
+      <section th:if="${post != null}">
+        A valid post
+      </section>
+    </article>
+  </body>
+</html>
