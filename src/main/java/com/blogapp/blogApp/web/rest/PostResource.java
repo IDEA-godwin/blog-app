@@ -1,4 +1,4 @@
-package com.blogapp.blogApp.controllers.Rest;
+package com.blogapp.blogApp.controllers.rest;
 
 import com.blogapp.blogApp.DTO.ResponseDTO;
 import com.blogapp.blogApp.DTO.requests.PostRequestDTO;

@@ -1,6 +1,5 @@
-package com.blogapp.blogApp.DTO.requests;
+package com.blogapp.blogApp.sevices.DTO.requests;
 
-import com.blogapp.blogApp.entities.Post;
 import lombok.Data;
 
 import java.util.Set;

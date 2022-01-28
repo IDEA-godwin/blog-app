@@ -1,4 +1,4 @@
-package com.blogapp.blogApp.DTO.requests;
+package com.blogapp.blogApp.sevices.DTO.requests;
 
 import com.blogapp.blogApp.entities.Post;
 //import io.swagger.annotations.ApiModelProperty;
@@ -9,10 +9,8 @@ public class PostsListResponseDTO {
 
     private String author;
 
-//    @ApiModelProperty(position
     private List<Post> posts;
 
-//    @ApiModelProperty(position = 1)
     private Integer numberOfPosts;
 
     public PostsListResponseDTO(String author, List<Post> posts, Integer numberOfPosts) {
