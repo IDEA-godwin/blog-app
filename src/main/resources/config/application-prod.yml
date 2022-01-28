@@ -1,5 +1,7 @@
 
 
-spring.datasource.url=jdbc:postgresql://ec2-3-218-71-191.compute-1.amazonaws.com:5432/dbqqm59c6chunk
-spring.datasource.username=ueoihsedrtqebn
-spring.datasource.password=bb18832eb117988bd076169bbb9d416907f1206a54315ab032166b6bc9245eac
+spring:
+  datasource:
+    url: jdbc:postgresql://ec2-3-218-71-191.compute-1.amazonaws.com:5432/dbqqm59c6chunk
+    username: ueoihsedrtqebn
+    password: bb18832eb117988bd076169bbb9d416907f1206a54315ab032166b6bc9245eac

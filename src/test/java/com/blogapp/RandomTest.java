@@ -1,4 +1,4 @@
-package com.blogapp.blogApp;
+package com.blogapp;
 
 public class RandomTest {
 

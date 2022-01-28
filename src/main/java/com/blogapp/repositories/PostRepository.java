@@ -1,10 +1,8 @@
-package com.blogapp.blogApp.repositories;
+package com.blogapp.repositories;
 
-import com.blogapp.blogApp.entities.Post;
+import com.blogapp.entities.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {

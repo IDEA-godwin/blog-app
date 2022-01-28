@@ -1,6 +1,6 @@
-package com.blogapp.blogApp.repositories;
+package com.blogapp.repositories;
 
-import com.blogapp.blogApp.entities.Tag;
+import com.blogapp.entities.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

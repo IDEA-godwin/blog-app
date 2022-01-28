@@ -12,7 +12,7 @@
     <body>
         <header>
             <div class="header-top">
-                <a href="index.html"><img class="logo" src="images/logo.png" alt="logo"></a>
+                <a href="/"><img class="logo" src="images/logo.png" alt="logo"></a>
                 <ul class="social-icon-list">
                     <li class="button">
                         <i class="fab fa-facebook-square"></i>
@@ -38,9 +38,17 @@
                 No Posts
             </article>
             <article class="posts-container" th:unless="${posts.isEmpty()}" th:each="post : ${posts}">
-                List of posts
+                <div class="post-preview-box">
+                    <a th:href="@{/posts/{id}(id=${post.getPostId()})}">
+                        <h3 class="preview-title" th:text="${post.getTitle()}">Post Title</h3>
+                        <p class="preview-body" th:text="${post.getPostBody()}">Post Body ...</p>
+                    </a>
+                </div>
             </article>
         </section>
+        <footer>
+            A random footer text.
+        </footer>
     </body>
 </html>
 

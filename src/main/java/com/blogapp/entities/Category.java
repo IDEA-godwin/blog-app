@@ -1,4 +1,4 @@
-package com.blogapp.blogApp.entities;
+package com.blogapp.entities;
 
 import lombok.Data;
 import lombok.Getter;

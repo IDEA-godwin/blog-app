@@ -1,6 +1,6 @@
-package com.blogapp.blogApp.sevices.DTO;
+package com.blogapp.sevices.DTO;
 
-import com.blogapp.blogApp.entities.Post;
+import com.blogapp.entities.Post;
 //import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;

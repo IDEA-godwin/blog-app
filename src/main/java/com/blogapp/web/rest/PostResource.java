@@ -1,8 +1,8 @@
-package com.blogapp.blogApp.web.rest;
+package com.blogapp.web.rest;
 
-import com.blogapp.blogApp.sevices.DTO.ResponseDTO;
-import com.blogapp.blogApp.sevices.DTO.PostDTO;
-import com.blogapp.blogApp.sevices.PostService;
+import com.blogapp.sevices.DTO.ResponseDTO;
+import com.blogapp.sevices.DTO.PostDTO;
+import com.blogapp.sevices.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,19 +1,18 @@
-package com.blogapp.blogApp.sevices;
+package com.blogapp.sevices;
 
-import com.blogapp.blogApp.sevices.DTO.ResponseDTO;
-import com.blogapp.blogApp.sevices.DTO.PostDTO;
-import com.blogapp.blogApp.entities.Category;
-import com.blogapp.blogApp.entities.Post;
-import com.blogapp.blogApp.entities.Tag;
-import com.blogapp.blogApp.repositories.CategoryRepository;
-import com.blogapp.blogApp.repositories.PostRepository;
-import com.blogapp.blogApp.repositories.TagRepository;
+import com.blogapp.sevices.DTO.ResponseDTO;
+import com.blogapp.sevices.DTO.PostDTO;
+import com.blogapp.entities.Category;
+import com.blogapp.entities.Post;
+import com.blogapp.entities.Tag;
+import com.blogapp.repositories.CategoryRepository;
+import com.blogapp.repositories.PostRepository;
+import com.blogapp.repositories.TagRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 

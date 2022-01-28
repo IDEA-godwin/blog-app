@@ -1,14 +1,11 @@
-package com.blogapp.blogApp.web.template;
+package com.blogapp.web.template;
 
-import com.blogapp.blogApp.entities.Post;
-import com.blogapp.blogApp.sevices.CategoryService;
-import com.blogapp.blogApp.sevices.PostService;
+import com.blogapp.sevices.CategoryService;
+import com.blogapp.sevices.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 @Controller
 public class TemplateResource {
