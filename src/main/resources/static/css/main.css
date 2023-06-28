@@ -85,10 +85,15 @@ a {
 }
 
 .form {
-    width: 40%;
     text-align: center;
     padding: 10px; margin: 10% auto;
     border: 1px black solid;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+
 }
 
 .input {

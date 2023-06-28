@@ -11,57 +11,24 @@
     <body>
         <header class="header container">
             <h1>The Green Blog</h1>
-            <div class="header-top">
-                <ul class="list">
-                    <li class="button">Posts</li>
-                    <li class="button">categories</li>
-                </ul>
-            </div>
         </header>
-        <article class="container">
+        <section class="container">
             <div style= "text-align: right">
-            <span>
-                <a class="button create-button" href="/create-post">Create New Post</a>
-            </span>
-            <span class="button create-button">
-                Create New Categories
-            </span>
-<!--            <div class="modal" style= "visibility: visible">-->
-<!--                <div class="modal-content  post-form">-->
-<!--                    <div class="modal-header">-->
-<!--                        <div class="modal-title">-->
-<!--                            <h1>Add Category</h1>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <label class="modal-body">-->
-<!--                        <input class="post-form-input" placeholder="Category Name" />-->
-<!--                    </label>-->
-<!--                    <label class="modal-footer post-form-footer">-->
-<!--                        <input type="submit" value="Submit" class="button" />-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--            </div>-->
-        </div>
-<!--            <div class="content">-->
-<!--                <div class="preview-box">-->
-<!--                    <div class="post-img">-->
-<!--                        <img src="" alt="post-img" />-->
-<!--                    </div>-->
-<!--                    <div class="post-content">-->
-<!--                        <div class="post-content-top">-->
-<!--                            <h2></h2>-->
-<!--                            <p></p>-->
-<!--                        </div>-->
-<!--                        <div class="post-content-bottom">-->
-<!--                            <span>19 claps</span>-->
-<!--                        </div>-->
-<!--                        <div class="admin-corner" style="display: inline-block" >-->
-<!--                            <button class="edit-btn"><a href="/create-post">Edit</a></button>-->
-<!--                            <button class="delete-btn">Delete</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-        </article>
+                <span>
+                    <a class="button create-button" href="/create-post">Create New Post</a>
+                </span>
+            </div>
+            <article class="posts-container" th:if="${posts.isEmpty()}">
+                No Posts
+            </article>
+            <article class="posts-container" th:unless="${posts.isEmpty()}" th:each="post : ${posts}">
+                <div class="post-preview-box">
+                    <a th:href="@{/posts/{id}(id=${post.getPostId()})}">
+                        <h3 class="preview-title" th:text="${post.getTitle()}">Post Title</h3>
+                        <p class="preview-body" th:text="${post.getPostBody()}">Post Body ...</p>
+                    </a>
+                </div>
+            </article>
+        </section>
     </body>
 </html>

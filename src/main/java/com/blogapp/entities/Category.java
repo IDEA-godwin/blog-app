@@ -25,4 +25,9 @@ public class Category implements Serializable {
     public Category(String categoryName) {
         this.name = categoryName;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

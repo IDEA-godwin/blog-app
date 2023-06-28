@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CategoryService {
@@ -22,9 +23,7 @@ public class CategoryService {
         this.tagRepository = tagRepository;
     }
 
-    public ResponseDTO getAllCategories() {
-        return new ResponseDTO("success", categoryRepository.findAll());
-    }
+    public List<Category> getAllCategories() { return categoryRepository.findAll(); }
 
     public ResponseDTO addCategory(Category category) {
         return new ResponseDTO("success", categoryRepository.save(category));

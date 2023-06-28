@@ -1,5 +1,6 @@
 package com.blogapp.sevices;
 
+import com.blogapp.dto.CreatePostDto;
 import com.blogapp.sevices.DTO.ResponseDTO;
 import com.blogapp.sevices.DTO.PostDTO;
 import com.blogapp.entities.Category;
@@ -33,34 +34,30 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public ResponseEntity<ResponseDTO> addNewPost(PostDTO postReq) {
-        try{
-            Post post = new Post(postReq.getTitle(), postReq.getPostBody());
-            post.setCategory(validCategory(postReq.getCategory()));
-            post.setPostTags(addTags(postReq.getTags()));
-            return new ResponseEntity<>(
-                    new ResponseDTO("success", postRepository.save(post)), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Post addNewPost(CreatePostDto postReq) {
+        Post post = new Post(postReq.getTitle(), postReq.getContent());
+        post.setCategory(validCategory(postReq.getCategory()));
+        post.setPostTags(addTags(postReq.getTags()));
+        return postRepository.save(post);
     }
 
     public Post getSinglePost(Long id) {
         return postRepository.findById(id)
-                .orElse(null);
+            .orElse(null);
     }
 
-    public ResponseEntity<ResponseDTO> updatePost(Long id, PostDTO postReq) {
-        if(postRepository.findById(id).isPresent()) {
-            Post post = postRepository.findById(id).get();
+    public ResponseEntity<ResponseDTO> updatePost(Long id, CreatePostDto postReq) {
+        Optional<Post> optPost = postRepository.findById(id);
+        if(optPost.isPresent()) {
+            Post post = optPost.get();
             post.setTitle(postReq.getTitle());
-            post.setPostBody(postReq.getPostBody());
+            post.setPostBody(postReq.getContent());
             post.setCategory(validCategory(postReq.getCategory()));
             post.setPostTags(addTags(postReq.getTags()));
             return new ResponseEntity<>(
                     new ResponseDTO("post updated", postRepository.save(post)), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDTO("post not found"), HttpStatus.NOT_FOUND);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
  /*   public ResponseEntity<ResponseDTO> deleteSinglePost(HttpServletRequest req, Long id) {
@@ -77,15 +74,16 @@ public class PostService {
 
     //return category if valid else throw category invalid
     Category validCategory(String category) {
-        if(categoryRepo.findByNameIgnoreCase(category).isPresent())
-            return categoryRepo.findByNameIgnoreCase(category).get();
+        Optional<Category> optCategory = categoryRepo.findByNameIgnoreCase(category);
+        if(optCategory.isPresent())
+            return optCategory.get();
         throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "category invalid");
     }
 
     //returns set of tags from list of string for post
-    Set<Tag> addTags(Set<String> tags) {
-        if(tags.isEmpty())
-            return new HashSet<>();
+    Set<Tag> addTags(List<String> tags) {
+        if(tags.isEmpty()) return new HashSet<>();
+
         return tags.stream().map(this::getTag).collect(Collectors.toSet());
     }
 

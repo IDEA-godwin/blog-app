@@ -1,0 +1,16 @@
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/blog_app_db"
+    username: "godwin"
+    password: "aquinas137"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+server:
+  port: 8080
+
+
+
